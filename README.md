@@ -184,7 +184,7 @@ Prefix aliases for `!` and `/ai`: `groq`, `gemini`, `gemini-pro`,
 | Axis              | Supported                                                        |
 |-------------------|------------------------------------------------------------------|
 | Worker runtime    | Cloudflare Workers, `compatibility_date = 2026-01-01`            |
-| Node toolchain    | Node 20+ for local development and CI                            |
+| Node toolchain    | Node 22+ for local development and CI (required by wrangler 4.x) |
 | TypeScript        | 5.7+ (strict, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`) |
 | Telegram          | Bot API webhook, MarkdownV2 parse mode                           |
 | Discord           | Interactions API v10, Ed25519 signature verification             |
@@ -264,7 +264,7 @@ break any of them will be flagged.
 #### 1. Prerequisites
 
 - A Cloudflare account.
-- Node.js 20+ and npm on the local machine.
+- Node.js 22+ and npm on the local machine.
 - A Telegram bot from [@BotFather](https://t.me/BotFather) (token + numeric
   user id of the operator).
 - Optionally, a Discord application with a public key and an application id.
