@@ -1,0 +1,40 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Type-check
+        run: npm run build
+
+      - name: Stage wrangler.toml from example
+        run: |
+          cp wrangler.example.toml wrangler.toml
+          # Fill placeholders so wrangler dry-run does not bail on validation.
+          # Real values are injected by `wrangler secret put` at deploy time.
+          sed -i 's|REPLACE_WITH_KV_NAMESPACE_ID|0123456789abcdef0123456789abcdef|g' wrangler.toml
+          sed -i 's|REPLACE_WITH_KV_PREVIEW_ID|fedcba9876543210fedcba9876543210|g' wrangler.toml
+          sed -i 's|REPLACE_WITH_TELEGRAM_USER_ID|0|g' wrangler.toml
+
+      - name: Validate worker compiles
+        run: npm run deploy:dry-run

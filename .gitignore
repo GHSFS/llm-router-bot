@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist/
+.wrangler/
+.dev.vars
+.env
+.env.local
+
+# Wrangler config with real secrets / KV ids
+wrangler.toml
+
+# Editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Test output
+coverage/
+.nyc_output/
+
+# Local notes / drafts that should not ship
+NOTES.md
+TODO.md
+*.local.md
