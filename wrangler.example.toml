@@ -1,0 +1,47 @@
+#:schema node_modules/wrangler/config-schema.json
+#
+# Copy this file to wrangler.toml and fill in real values before deploying.
+# wrangler.toml itself is gitignored so secrets never land in version control.
+#
+# Secrets (TG_BOT_TOKEN, TG_WEBHOOK_SECRET, DISCORD_PUBLIC_KEY, *_API_KEY) are
+# NOT set here. Use `wrangler secret put <NAME>` for each one — they live in
+# Cloudflare's encrypted store, not in this file.
+
+name = "llm-router-bot"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Workers AI binding — provides env.AI.run() with Llama 3.3 70B and friends.
+# No API key needed; usage is metered against the account's daily neuron quota.
+[ai]
+binding = "AI"
+
+# KV namespace for per-user state and per-provider quota counters.
+# Create with: wrangler kv namespace create SESSIONS
+# Then paste the returned id below.
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_KV_PREVIEW_ID"
+
+# Non-secret configuration. Bot tokens and API keys are NOT here — see above.
+[vars]
+# Telegram numeric user id allowed to talk to the bot. Anyone else is ignored.
+TG_OWNER_ID = "REPLACE_WITH_TELEGRAM_USER_ID"
+
+# Discord numeric user id allowed to talk to the bot. Leave blank to disable
+# Discord; the worker will only register the /tg/* route in that case.
+DISCORD_OWNER_ID = ""
+
+# Discord application id. Required if Discord is enabled. Found in the Discord
+# Developer Portal under General Information.
+DISCORD_APP_ID = ""
+
+# Optional: comma-separated list of provider ids to disable even if their key
+# is set. Useful for temporarily taking a misbehaving provider out of rotation.
+# Example: "gemini-pro,hf"
+DISABLED_PROVIDERS = ""
+
+# Optional: max history turns kept per user (default 10).
+HISTORY_TURNS = "10"
